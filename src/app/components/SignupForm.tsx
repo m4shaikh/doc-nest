@@ -3,6 +3,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { loginType, signupSchema, type signupType } from "../schema/auth";
+import { createAccount } from "@/lib/actions/user.actions";
 
 const SignupForm = () => {
   const {
@@ -12,7 +13,10 @@ const SignupForm = () => {
   } = useForm<signupType>({ resolver: zodResolver(signupSchema) });
 
   const onSubmit = async (data: signupType) => {
-    console.log(data);
+    const user = createAccount({
+        fullName:data.name,
+        email:data.email
+    })    
   };
 
   return (
@@ -46,6 +50,7 @@ const SignupForm = () => {
       <button
         type="submit"
         className="w-full bg-primary rounded-lg py-2 font-medium shadow-sm hover:opacity-90 text-foreground text-primary-foreground"
+          disabled={isSubmitting}
       >
         Submit
       </button>

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema, type loginType } from "../schema/auth";
+import { createAccount } from "@/lib/actions/user.actions";
 
 const LoginForm = () => {
   const {
@@ -16,15 +17,16 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: loginType) => {
-    console.log(data);
-  };
+        const user = createAccount({
+            fullName:'',
+            email:data.email
+        })    
+};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {/* Email */}
       <div className="space-y-2">
-
-
         <input
           type="email"
           id="email"
@@ -34,9 +36,7 @@ const LoginForm = () => {
         />
 
         {errors.email && (
-          <p className="text-sm text-destructive">
-            {errors.email.message}
-          </p>
+          <p className="text-sm text-destructive">{errors.email.message}</p>
         )}
       </div>
 
