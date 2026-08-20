@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             DocNest
           </h1>
 
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Your documents, organized.
           </p>
         </div>
