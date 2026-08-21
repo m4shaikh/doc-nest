@@ -2,8 +2,9 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { loginType, signupSchema, type signupType } from "../app/schema/auth";
+import { loginType, signupSchema, type signupType } from "../schema/auth";
 import { createAccount } from "@/lib/actions/user.actions";
+import OTPModal from "./OTPModal";
 
 const SignupForm = () => {
   const [accountId, setAccountId] = useState("");
@@ -56,6 +57,9 @@ const SignupForm = () => {
       >
         Submit
       </button>
+      {
+        accountId && <OTPModal accountId={accountId} />
+      }
     </form>
   );
 };

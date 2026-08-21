@@ -8,15 +8,15 @@ import {
     AlertDialogDescription,
     AlertDialogHeader,
     AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from "@/app/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation'
 import { REGEXP_ONLY_DIGITS } from "input-otp"
-import { Field } from "@/components/ui/field"
+import { Field } from "@/app/components/ui/field"
 import {
     InputOTP,
     InputOTPGroup,
     InputOTPSlot,
-} from "@/components/ui/input-otp"
+} from "@/app/components/ui/input-otp"
 import { verifyOTP } from '@/lib/actions/user.actions'
 
 const OTPModal = ({ accountId }: { accountId: string }) => {

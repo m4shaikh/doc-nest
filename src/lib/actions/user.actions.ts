@@ -3,7 +3,7 @@
 import { Query, ID } from "node-appwrite";
 import { createAdminClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
-import { parseStringify } from "../util";
+import { parseStringify } from "../utils";
 import { cookies } from "next/headers";
 
 //User enters name and email

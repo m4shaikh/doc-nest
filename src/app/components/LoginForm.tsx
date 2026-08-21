@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertDialogTrigger } from "./ui/alert-dialog";
-import { loginSchema, type loginType } from "../app/schema/auth";
+import { loginSchema, type loginType } from "../schema/auth";
 import { createAccount } from "@/lib/actions/user.actions";
 import OTPModal from "./OTPModal";
 

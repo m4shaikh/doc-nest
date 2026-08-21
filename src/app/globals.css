@@ -35,9 +35,9 @@
   --sidebar-accent-foreground: oklch(0.3760 0.0225 64.3434);
   --sidebar-border: oklch(0.8606 0.0321 84.5881);
   --sidebar-ring: oklch(0.6180 0.0778 65.5444);
-  --font-sans: Libre Baskerville, serif;
-  --font-serif: Lora, serif;
-  --font-mono: IBM Plex Mono, monospace;
+  --font-family-sans: "Libre Baskerville", serif;
+  --font-family-serif: "Lora", serif;
+  --font-family-mono: "IBM Plex Mono", monospace;
   --radius: 0.25rem;
   --shadow-x: 2px;
   --shadow-y: 3px;
@@ -144,9 +144,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
+  --font-sans: var(--font-family-sans);
+  --font-serif: var(--font-family-serif);
+  --font-mono: var(--font-family-mono);
+
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
