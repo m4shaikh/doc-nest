@@ -1,36 +1,52 @@
-import { File, LayoutDashboardIcon , ImageIcon, VideoIcon, PieChart } from 'lucide-react'
+import { File, LayoutDashboardIcon, ImageIcon, VideoIcon, PieChart, PieChartIcon } from 'lucide-react'
 import React from 'react'
+import SidebarItem from './SidebarItem'
+import Image from 'next/image'
 
+const Items = [
+    {
+        url: '/',
+        name: 'Dashboard',
+        icon: <LayoutDashboardIcon />
+    }, {
+        url: '/',
+        name: 'Documents',
+        icon: <File />
+    }, {
+        url: '/',
+        name: 'Images',
+        icon: <ImageIcon />
+    }, {
+        url: '/',
+        name: 'Media',
+        icon: <VideoIcon />
+    }, {
+        url: '/',
+        name: 'Others',
+        icon: <PieChartIcon />
+    }
+
+]
 
 const Sidebar = () => {
-  return (
-    <aside className='sidebar h-full flex flex-col'>
-        <div className=' text-2xl font-bold px-6 py-4 mb-6'>
-            <span className='cursor-pointer'>
-                DocNest
-            </span>
+    return (
+        <aside className='sidebar h-full px-4 flex flex-col justify-between mt-4 border-r'>
 
-        </div>
-        <div className='flex flex-col px-4 gap-4 '>
-            <div className='px-4 py-2 hover:bg-popover rounded-2xl flex gap-2 cursor-pointer'>
-                <LayoutDashboardIcon/>Dashboard
-            </div>
-            <div className='px-4 py-2 hover:bg-popover rounded-2xl flex gap-2 cursor-pointer'>
-               <File/> Document
-            </div>
-            <div className='px-4 py-2 hover:bg-popover rounded-2xl flex gap-2 cursor-pointer'>
-                <ImageIcon/>Images
-            </div>
-            <div className='px-4 py-2 hover:bg-popover rounded-2xl flex gap-2 cursor-pointer'>
-                <VideoIcon/>Media
-            </div>
-            <div className='px-4 py-2 hover:bg-popover rounded-2xl flex gap-2 cursor-pointer'>
-                <PieChart/> Others
-            </div>
-        </div>
+            <div className='flex flex-col gap-4 '>
 
-    </aside>
-  )
+                {Items.map((item) => <SidebarItem key={item.name} url={item.url} name={item.name} icon={item.icon} />)}
+
+            </div>
+            <div className='py-8'>
+                <div className='h-[48px] w-[48px] rounded-full overflow-hidden'>
+                    <Image src='/placeHolder.jpg' width={48} height={48} alt="avatar" className='object-contain' />
+
+                </div>
+                <p>Name</p>
+            </div>
+
+        </aside>
+    )
 }
 
 export default Sidebar
