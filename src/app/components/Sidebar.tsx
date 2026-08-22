@@ -28,21 +28,25 @@ const Items = [
 
 ]
 
-const Sidebar = () => {
+const Sidebar = ({userName,email}:{userName:string, email:string}) => {
     return (
-        <aside className='sidebar h-full px-4 flex flex-col justify-between mt-4 border-r'>
+        <aside className='sidebar h-full px-4 flex flex-col justify-between mt-4 '>
 
             <div className='flex flex-col gap-4 '>
 
                 {Items.map((item) => <SidebarItem key={item.name} url={item.url} name={item.name} icon={item.icon} />)}
 
             </div>
-            <div className='py-8'>
-                <div className='h-[48px] w-[48px] rounded-full overflow-hidden'>
-                    <Image src='/placeHolder.jpg' width={48} height={48} alt="avatar" className='object-contain' />
+            <div className='flex items-center gap-2 py-8 text-sm' >
+                <div className='h-[44px] w-[44px] rounded-full overflow-hidden'>
+                    <Image src='/placeHolder.jpg' width={44} height={44} alt="avatar" className='object-contain' />
 
                 </div>
-                <p>Name</p>
+                <div>
+
+                    <p>{userName}</p>
+                    <p className=''>{email}</p>
+                </div>
             </div>
 
         </aside>

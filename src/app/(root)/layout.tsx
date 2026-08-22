@@ -2,6 +2,7 @@ import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Sidebar from "@/app/components/Sidebar";
 import Navbar from "@/app/components/Navbar";
+import { getCurrentUser } from "@/lib/actions/user.actions";
 
 const geist = Geist({
     subsets: ["latin"],
@@ -13,11 +14,10 @@ export const metadata = {
     description: "Your secure file manager",
 };
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default async function RootLayout({children}: {children: React.ReactNode;}) {
+
+    const user = await getCurrentUser()
+    console.log(user)
     return (
         <html lang="en" className={cn("font-sans", geist.variable)}>
             <body>
@@ -31,7 +31,7 @@ export default function RootLayout({
                     <div className="flex h-[calc(100vh-60px)] w-full">
                         {/* Sidebar */}
                         <div className="h-full shrink-0">
-                            <Sidebar />
+                            <Sidebar userName={user.fullName} email={user.email}/>
                         </div>
 
                         {/* Page content */}
