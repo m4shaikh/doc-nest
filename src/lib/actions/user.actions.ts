@@ -5,7 +5,7 @@ import { createAdminClient, createSessionClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
 import { parseStringify } from "../utils";
 import { cookies } from "next/headers";
-
+import { redirect } from "next/navigation";
 //User enters name and email
 //Check if user already exists
 //Send otp to that email
@@ -107,3 +107,16 @@ export const getCurrentUser = async () => {
 
   return parseStringify(user.documents[0])
 } 
+export const logoutUser = async () => {
+  const {account} = await createSessionClient()
+  
+  try{
+    await account.deleteSession('currunt');
+    (await cookies()).delete('appwrite-session');
+  }catch(error){
+    handleError(error,'Failed to signout user')
+  }finally{
+    redirect("/login")
+  }
+
+}

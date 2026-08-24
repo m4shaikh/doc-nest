@@ -3,7 +3,7 @@ import React from 'react'
 import SidebarItem from './SidebarItem'
 import Image from 'next/image'
 
-const Items = [
+export const Items = [
     {
         url: '/',
         name: 'Dashboard',
@@ -30,7 +30,7 @@ const Items = [
 
 const Sidebar = ({userName,email}:{userName:string, email:string}) => {
     return (
-        <aside className='sidebar h-full px-4 flex flex-col justify-between mt-4 '>
+        <aside className='sidebar h-full px-2 flex flex-col justify-between mt-4 '>
 
             <div className='flex flex-col gap-4 '>
 
@@ -42,7 +42,7 @@ const Sidebar = ({userName,email}:{userName:string, email:string}) => {
                     <Image src='/placeHolder.jpg' width={44} height={44} alt="avatar" className='object-contain' />
 
                 </div>
-                <div>
+                <div className='hidden lg:block'>
 
                     <p>{userName}</p>
                     <p className=''>{email}</p>
