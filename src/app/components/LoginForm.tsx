@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertDialogTrigger } from "./ui/alert-dialog";
 import { loginSchema, type loginType } from "../schema/auth";
-import { createAccount } from "@/lib/actions/user.actions";
+import { loginUser } from "@/lib/actions/user.actions";
 import OTPModal from "./OTPModal";
 
 const LoginForm = () => {
@@ -20,8 +20,7 @@ const LoginForm = () => {
     });
 
     const onSubmit = async (data: loginType) => {
-        const user = await createAccount({
-            fullName: '',
+        const user = await loginUser({
             email: data.email
         })
         setAccountId(user.accountId)

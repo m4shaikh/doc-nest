@@ -28,7 +28,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-//Just checking that git works properly
-//Second check 
-// third check

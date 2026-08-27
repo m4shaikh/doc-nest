@@ -9,19 +9,19 @@ export const Items = [
         name: 'Dashboard',
         icon: <LayoutDashboardIcon />
     }, {
-        url: '/',
+        url: '/documents',
         name: 'Documents',
         icon: <File />
     }, {
-        url: '/',
+        url: '/images',
         name: 'Images',
         icon: <ImageIcon />
     }, {
-        url: '/',
+        url: '/media',
         name: 'Media',
         icon: <VideoIcon />
     }, {
-        url: '/',
+        url: '/others',
         name: 'Others',
         icon: <PieChartIcon />
     }

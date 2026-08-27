@@ -120,3 +120,18 @@ export const logoutUser = async () => {
   }
 
 }
+
+
+export const loginUser = async ({email}:{email:string}) => {
+  try{
+    const user = await getUserByEmail(email)
+    if(user){
+      await sendEmailOTP({email})
+      return parseStringify({accountId:user.accountId})
+    }
+      return parseStringify({accountId:null , error:'user not found'})
+
+  }catch(error){
+      handleError(error,'Failed to sign in')
+  }
+}
