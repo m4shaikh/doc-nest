@@ -7,7 +7,7 @@ export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
-}) {
+}) {    
     const user = await getCurrentUser();
 
     console.log(user);
@@ -35,7 +35,7 @@ export default async function RootLayout({
                 </div>
 
                 {/* Page content */}
-                <div className="min-w-0 flex-1 overflow-auto">
+                <div className=" flex-1 overflow-auto bg-popover rounded-2xl ml-4 mr-4 mb-4">
                     {children}
                 </div>
 

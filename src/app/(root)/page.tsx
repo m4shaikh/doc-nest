@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <main className="rounded-2xl flex flex-1 items-center justify-center bg-popover ">
-      ndfnf
+    <main className="rounded-2xl h-full flex items-center justify-center bg-popover ">
+      moin shaikh qwe
     </main>
   );
 }
