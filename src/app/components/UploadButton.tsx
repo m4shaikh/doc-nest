@@ -1,21 +1,38 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
+'use client'
+
+import React, { useCallback, useState } from 'react'
+import { useDropzone } from "react-dropzone"
 import { Upload } from 'lucide-react'
-import UploadModal from './UploadModal'
+import UploadingModal from './UploadingModal' // Make sure this path is correct
+
 const UploadButton = () => {
-    
-    const [isOpen,setIsOpen] = useState(false)
-    
+    const [acceptedFiles, setAcceptedFiles] = useState<File[]>([])
+
+    const onDrop = useCallback((droppedFiles: File[]) => {
+        console.log("Files selected:", droppedFiles)
+        setAcceptedFiles(droppedFiles)
+    }, [])
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop })
+
     return (
         <div>
-            <button onClick={() => setIsOpen(true)}>
-                <div className='flex p-2 gap-1 border rounded-2xl cursor-pointer bg-popover shadow'>
-                    <Upload /> Upload
-                </div>
+            {/* The button now triggers the file browser directly using getRootProps */}
+            <button 
+                type="button"
+                {...getRootProps()} 
+                className='flex items-center p-2 gap-1 border rounded-2xl cursor-pointer bg-popover shadow hover:bg-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring'
+            >
+                <input {...getInputProps()} />
+                <Upload className="w-5 h-5" /> 
+                <span>Upload</span>
             </button>
-            <UploadModal isOpen={isOpen} setIsOpen={setIsOpen}/>
-        </div>
 
+            {/* This will render once files are selected */}
+            {acceptedFiles.length > 0 && (
+                <UploadingModal files={acceptedFiles} />
+            )}
+        </div>
     )
 }
 

@@ -2,6 +2,7 @@ import Sidebar from "@/app/components/Sidebar";
 import Navbar from "@/app/components/Navbar";
 import MobileNav from "@/app/components/MobileNav";
 import { getCurrentUser } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
 
 export default async function RootLayout({
     children,
@@ -9,7 +10,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {    
     const user = await getCurrentUser();
-
+    if(!user) return redirect('/signup')
     console.log(user);
 
     return (

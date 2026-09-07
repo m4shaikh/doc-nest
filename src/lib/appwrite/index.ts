@@ -14,7 +14,9 @@ export const createSessionClient = async () =>{
 
     console.log(AllCookies)
 
-    if (!session || !session.value) throw new Error('No Session');
+    if (!session?.value) {
+        return null;
+    }
 
     client.setSession(session.value);
 
