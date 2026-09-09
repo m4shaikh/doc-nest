@@ -115,10 +115,10 @@ export const getCurrentUser = async () => {
 }
 
 export const logoutUser = async () => {
-  const sessionClient= await createSessionClient()
-      if (!sessionClient) {
-        return null;
-    }
+  const sessionClient = await createSessionClient()
+  if (!sessionClient) {
+    return null;
+  }
 
   const { account } = sessionClient
 
@@ -144,6 +144,6 @@ export const loginUser = async ({ email }: { email: string }) => {
     return parseStringify({ accountId: null, error: 'user not found' })
 
   } catch (error) {
-    handleError(error, 'Failed to sign in')
+    handleError(error, 'Failed to Login')
   }
 }

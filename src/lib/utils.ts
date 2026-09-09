@@ -6,17 +6,17 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-export const parseStringify = (value:unknown) => {
-    return JSON.parse(JSON.stringify(value))
+export const parseStringify = (value: unknown) => {
+  return JSON.parse(JSON.stringify(value))
 }
 
-export function getFileType(fileName:string) {
+export function getFileType(fileName: string) {
   if (!fileName || typeof fileName !== 'string') {
     return { extension: null, type: 'unknown' };
   }
 
   const lastDotIndex = fileName.lastIndexOf('.');
-  
+
   // Handle files with no extension or hidden files with no trailing extension (e.g., ".env")
   if (lastDotIndex === -1 || lastDotIndex === 0 || lastDotIndex === fileName.length - 1) {
     return { extension: null, type: 'unknown' };

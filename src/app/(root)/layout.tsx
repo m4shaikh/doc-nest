@@ -1,3 +1,5 @@
+import FileUploader from "../components/FileUploader";
+
 import Sidebar from "@/app/components/Sidebar";
 import Navbar from "@/app/components/Navbar";
 import MobileNav from "@/app/components/MobileNav";
@@ -16,7 +18,7 @@ export default async function RootLayout({
     return (
         <div className="h-screen w-full overflow-hidden">
             {/* Navbar */}
-            <div className="h-[60px] shrink-0">
+            <div className="h-[60px] shrink-0 bg-sidebar">
                 <Navbar />
                 <MobileNav
                     userName={user.fullName}
@@ -28,7 +30,7 @@ export default async function RootLayout({
             <div className="flex h-[calc(100vh-60px)] w-full">
                 
                 {/* Sidebar */}
-                <div className="h-full shrink-0 hidden md:block">
+                <div className="h-full shrink-0 hidden md:block bg-sidebar " >
                     <Sidebar
                         userName={user.fullName}
                         email={user.email}
@@ -36,8 +38,10 @@ export default async function RootLayout({
                 </div>
 
                 {/* Page content */}
-                <div className=" flex-1 overflow-auto bg-popover rounded-2xl ml-4 mr-4 mb-4">
+                <div className=" flex-1 overflow-auto bg-background rounded-2xl ml-4 mr-4 mb-4">
                     {children}
+                      <FileUploader ownerId='' accountId=''/>
+                    
                 </div>
 
             </div>
