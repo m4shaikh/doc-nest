@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-
+type FileType = 'document' | 'image' | 'video' | 'audio' | 'other';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -10,38 +10,115 @@ export const parseStringify = (value: unknown) => {
   return JSON.parse(JSON.stringify(value))
 }
 
-export function getFileType(fileName: string) {
-  if (!fileName || typeof fileName !== 'string') {
-    return { extension: null, type: 'unknown' };
+export const getFileType = (fileName: string) => {
+  const extension = fileName.split('.').pop()?.toLowerCase();
+
+  if (!extension) return { type: 'other', extension: '' };
+
+  const documentExtensions = [
+    'pdf',
+    'doc',
+    'docx',
+    'txt',
+    'xls',
+    'xlsx',
+    'csv',
+    'rtf',
+    'ods',
+    'ppt',
+    'odp',
+    'md',
+    'html',
+    'htm',
+    'epub',
+    'pages',
+    'fig',
+    'psd',
+    'ai',
+    'indd',
+    'xd',
+    'sketch',
+    'afdesign',
+    'afphoto',
+    'afphoto',
+  ];
+  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+  const videoExtensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+  const audioExtensions = ['mp3', 'wav', 'ogg', 'flac'];
+
+  if (documentExtensions.includes(extension))
+    return { type: 'document', extension };
+  if (imageExtensions.includes(extension)) return { type: 'image', extension };
+  if (videoExtensions.includes(extension)) return { type: 'video', extension };
+  if (audioExtensions.includes(extension)) return { type: 'audio', extension };
+
+  return { type: 'other', extension };
+};
+
+
+export const constructFileUrl = (bucketFileId: string) => {
+  return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`;
+};
+export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
+
+export const getFileIcon = (
+  extension: string | undefined,
+  type: FileType | string,
+) => {
+  switch (extension) {
+    // Document
+    case 'pdf':
+      return '/assets/icons/file-pdf.svg';
+    case 'doc':
+      return '/assets/icons/file-doc.svg';
+    case 'docx':
+      return '/assets/icons/file-docx.svg';
+    case 'csv':
+      return '/assets/icons/file-csv.svg';
+    case 'txt':
+      return '/assets/icons/file-txt.svg';
+    case 'xls':
+    case 'xlsx':
+      return '/assets/icons/file-document.svg';
+    // Image
+    case 'svg':
+      return '/assets/icons/file-image.svg';
+    // Video
+    case 'mkv':
+    case 'mov':
+    case 'avi':
+    case 'wmv':
+    case 'mp4':
+    case 'flv':
+    case 'webm':
+    case 'm4v':
+    case '3gp':
+      return '/assets/icons/file-video.svg';
+    // Audio
+    case 'mp3':
+    case 'mpeg':
+    case 'wav':
+    case 'aac':
+    case 'flac':
+    case 'ogg':
+    case 'wma':
+    case 'm4a':
+    case 'aiff':
+    case 'alac':
+      return '/assets/icons/file-audio.svg';
+
+    default:
+      switch (type) {
+        case 'image':
+          return '/assets/icons/file-image.svg';
+        case 'document':
+          return '/assets/icons/file-document.svg';
+        case 'video':
+          return '/assets/icons/file-video.svg';
+        case 'audio':
+          return '/assets/icons/file-audio.svg';
+        default:
+          return '/assets/icons/file-other.svg';
+      }
   }
-
-  const lastDotIndex = fileName.lastIndexOf('.');
-
-  // Handle files with no extension or hidden files with no trailing extension (e.g., ".env")
-  if (lastDotIndex === -1 || lastDotIndex === 0 || lastDotIndex === fileName.length - 1) {
-    return { extension: null, type: 'unknown' };
-  }
-
-  const extension = fileName.slice(lastDotIndex + 1).toLowerCase();
-
-  // Dictionary mapping broad categories to specific extensions
-  const typeMap = {
-    image: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp', 'ico'],
-    video: ['mp4', 'mkv', 'avi', 'mov', 'wmv', 'flv', 'webm'],
-    audio: ['mp3', 'wav', 'ogg', 'm4a', 'flac', 'aac'],
-    document: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'rtf', 'md'],
-    archive: ['zip', 'rar', 'tar', 'gz', '7z', 'bz2'],
-    code: ['js', 'ts', 'html', 'css', 'json', 'xml', 'py', 'java', 'cpp', 'c', 'sh']
-  };
-
-  let fileType = 'unknown';
-
-  for (const [type, extensions] of Object.entries(typeMap)) {
-    if (extensions.includes(extension)) {
-      fileType = type;
-      break;
-    }
-  }
-
-  return { extension, type: fileType };
-}
+};
