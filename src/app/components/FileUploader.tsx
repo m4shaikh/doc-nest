@@ -7,27 +7,43 @@ import { useDropzone } from "react-dropzone";
 import { UploadIcon } from "lucide-react";
 import Thumbnail from "./Thumbnail";
 import Image from "next/image";
+import { uploadFile } from "@/lib/actions/files.action";
+import { usePathname } from "next/navigation";
 
 interface Props {
     ownerId: string;
     accountId: string;
     className?: string;
 }
-
+const MAX_FILE_SIZE = 1024 * 1024 * 1024
 const FileUploader = ({ ownerId, accountId, className }: Props) => {
-
+    
+    const path = usePathname()
     const [files, setFiles] = useState<File[]>([])
 
-    const handleRemove = (e:React.MouseEvent,fileName:string) => {
-    setFiles((prevFiles)=> prevFiles.filter((file)=> file.name != fileName ))
+    const handleRemove = (e: React.MouseEvent, fileName: string) => {
+        setFiles((prevFiles) => prevFiles.filter((file) => file.name != fileName))
     }
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
+    const onDrop = useCallback(async(acceptedFiles: File[]) => {
         // handle accepted files
-        setFiles(acceptedFiles)
-    }, [])
+        const uploadPromises = acceptedFiles.map(async (file) => {
+            if (file.size > MAX_FILE_SIZE) {
+                setFiles((prevFiles) => prevFiles.filter( (f)=> f.name != file.name) )
+                console.log('Too big File')
+                return 'error'
+            }
+            return uploadFile({file, ownerId, accountId, path}).then((uploadedFile)=>{
+                if(uploadedFile){
+                    setFiles((prevFiles)=>prevFiles.filter((f)=>file.name != f.name))
+                }
+            })
+        })
+        await Promise.all(uploadPromises)
+    }, [ownerId, accountId, path])
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+    const { getRootProps, getInputProps } = useDropzone({ onDrop })
+
 
     return (
         <>
@@ -41,7 +57,7 @@ const FileUploader = ({ ownerId, accountId, className }: Props) => {
                 >
                     <Image
                         src="/assets/icons/upload.svg"
-                        height={24} 
+                        height={24}
                         width={24}
                         alt="upload"
                         className=""
@@ -70,16 +86,16 @@ const FileUploader = ({ ownerId, accountId, className }: Props) => {
                                     url={getFileIcon(extension, type)}
                                 />
                                 <div className="w-[90%] flex items-center justify-between ">
-                                    <div className="w-full">
-                                        <p className=" line-clamp-1">
+                                    <div className="w-[80%]">
+                                        <p className="max-w-[90%] line-clamp-1">
                                             {file.name}
-                                        </p>    
-                                        <Image src='/assets/icons/file-loader.gif' className = 'w-full h-[4px]' height={0} width={0} alt="" />
+                                        </p>
+                                        <Image src='/assets/icons/file-loader.gif' className='w-[90%] h-[4px]' height={0} width={0} alt="" />
                                     </div>
 
-                                    <Image src='/assets/icons/remove.svg' onClick={(e)=>handleRemove(e,file.name)} height={16} width={16} alt=""/>
+                                    <Image className='' src='/assets/icons/remove.svg' onClick={(e) => handleRemove(e, file.name)} height={16} width={16} alt="" />
                                 </div>
-                                
+
                             </li>
                         );
                     })}
