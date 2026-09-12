@@ -15,7 +15,7 @@ interface Props {
     accountId: string;
     className?: string;
 }
-const MAX_FILE_SIZE = 1024 * 1024 * 1024
+const MAX_FILE_SIZE = 10 * 1024 * 1024
 const FileUploader = ({ ownerId, accountId, className }: Props) => {
     
     const path = usePathname()
@@ -27,6 +27,8 @@ const FileUploader = ({ ownerId, accountId, className }: Props) => {
 
     const onDrop = useCallback(async(acceptedFiles: File[]) => {
         // handle accepted files
+        setFiles(acceptedFiles)
+
         const uploadPromises = acceptedFiles.map(async (file) => {
             if (file.size > MAX_FILE_SIZE) {
                 setFiles((prevFiles) => prevFiles.filter( (f)=> f.name != file.name) )
