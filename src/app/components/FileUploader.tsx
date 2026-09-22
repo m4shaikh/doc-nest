@@ -12,11 +12,12 @@ import { usePathname } from "next/navigation";
 
 interface Props {
     ownerId: string;
+    ownerName: string;
     accountId: string;
     className?: string;
 }
 const MAX_FILE_SIZE = 10 * 1024 * 1024
-const FileUploader = ({ ownerId, accountId, className }: Props) => {
+const FileUploader = ({ ownerId, accountId, className, ownerName }: Props) => {
     
     const path = usePathname()
     const [files, setFiles] = useState<File[]>([])
@@ -35,7 +36,7 @@ const FileUploader = ({ ownerId, accountId, className }: Props) => {
                 console.log('Too big File')
                 return 'error'
             }
-            return uploadFile({file, ownerId, accountId, path}).then((uploadedFile)=>{
+            return uploadFile({file, ownerId, accountId, path, ownerName}).then((uploadedFile)=>{
                 if(uploadedFile){
                     setFiles((prevFiles)=>prevFiles.filter((f)=>file.name != f.name))
                 }
@@ -55,7 +56,7 @@ const FileUploader = ({ ownerId, accountId, className }: Props) => {
 
                 <button
                     type="button"
-                    className="fixed bottom-10 right-10 p-2 bg-secondary shadow-md border cursor-pointer rounded-full"
+                    className="fixed bottom-10 right-10 p-2 bg-primary/80 shadow-md border cursor-pointer rounded-xl"
                 >
                     <Image
                         src="/assets/icons/upload.svg"

@@ -1,5 +1,5 @@
 'use server'
-import { Account, Avatars, Client, Databases, Storage, TablesDB } from "node-appwrite"
+import { Account, Avatars, Client, Databases, Storage } from "node-appwrite"
 import { appwriteConfig } from "./config"
 import { cookies } from "next/headers"
 import { error } from "console"
@@ -41,7 +41,7 @@ export const createAdminClient = async () => {
             return new Account(client)
         },
         get databases(){
-            return new TablesDB(client)
+            return new Databases(client)
         },
         get storage(){
             return new Storage(client)

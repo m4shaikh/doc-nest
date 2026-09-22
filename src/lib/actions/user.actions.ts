@@ -17,13 +17,13 @@ import { redirect } from "next/navigation";
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
 
-  const result = await databases.listRows({
+  const result = await databases.listDocuments({
     databaseId: appwriteConfig.databaseId,
-    tableId: appwriteConfig.userTableId,
+    collectionId: appwriteConfig.userTableId,
     queries: [Query.equal("email", [email])],
   });
 
-  return result.total > 0 ? result.rows[0] : null;
+  return result.total > 0 ? result.documents[0] : null;
 };
 
 const handleError = (error: unknown, message: string) => {
@@ -55,7 +55,7 @@ export const createAccount = async ({
   if (!accountId) throw new Error("Failed to send an OTP");
   if (!existingUser) {
     const { databases } = await createAdminClient();
-    await databases.createRow(
+    await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userTableId,
       ID.unique(),

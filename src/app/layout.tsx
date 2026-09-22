@@ -10,6 +10,7 @@ const geist = Geist({
 export const metadata = {
   title: "Doc-Nest",
   description: "Your secure file manager",
+  icons:{icon:{url:'/DN.svg',sizes:'32x32',type:'image.png'}}
 };
 
 export default function RootLayout({
@@ -22,7 +23,7 @@ export default function RootLayout({
       lang="en"
       className={cn("font-sans", geist.variable)}
     >
-      <body>
+      <body className="bg-background">
         {children}
       </body>
     </html>

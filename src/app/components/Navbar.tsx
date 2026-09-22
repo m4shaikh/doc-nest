@@ -8,7 +8,7 @@ import FileUploader from './FileUploader'
 const Navbar = () => {
   return (
     <div className='w-full h-full hidden lg:flex flex items-center gap-20 px-6 '>
-      <div className=' text-2xl font-bold px-6 py-4'>
+      <div className=' text-2xl font-bold px-4 py-4'>
         <span className='cursor-pointer '>
           DocNest
         </span>

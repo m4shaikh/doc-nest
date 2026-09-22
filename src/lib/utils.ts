@@ -122,3 +122,38 @@ export const getFileIcon = (
       }
   }
 };
+
+export const getFileSize = (size:number) =>{
+  if(size>1024 && size< 1048576){
+    size = size/1024
+    return `${size.toFixed(1)}KB`
+  }
+  if(size>1048576){
+    size = (size/1048576)
+    return `${size.toFixed(1)}MB`
+  }else{
+    return `${size}B`
+  }
+} 
+export const parseDateTime = (dateString: string) => {
+  const date = new Date(dateString);
+  
+  if (isNaN(date.getTime())) {
+    return null;
+  }
+
+  return {
+    date, // Original Date object if needed
+    year: date.getFullYear(), // e.g. 2026
+    month: date.getMonth() + 1, // 1-12
+    monthNameShort: date.toLocaleString('en-US', { month: 'short' }), // "Sep"
+    monthNameLong: date.toLocaleString('en-US', { month: 'long' }), // "September"
+    day: date.getDate(), // 1-31
+    dayOfWeek: date.toLocaleString('en-US', { weekday: 'short' }), // "Wed"
+    hour: date.getHours(), // 0-23 (24-hour)
+    hour12: date.getHours() % 12 || 12, // 1-12 (12-hour)
+    minute: String(date.getMinutes()).padStart(2, '0'), // "33" (padded)
+    second: String(date.getSeconds()).padStart(2, '0'), // "51" (padded)
+    ampm: date.getHours() >= 12 ? 'PM' : 'AM',
+  };
+};
