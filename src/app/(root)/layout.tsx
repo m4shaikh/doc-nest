@@ -13,8 +13,7 @@ export default async function RootLayout({
 }) {    
     const user = await getCurrentUser();
     if(!user) return redirect('/signup')
-    console.log(user);
-
+        
     return (
         <div className="h-screen w-full overflow-hidden">
             {/* Navbar */}

@@ -28,7 +28,7 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Email */}
+
             <div className="space-y-2">
                 <input
                     type="email"
@@ -42,8 +42,6 @@ const LoginForm = () => {
                     <p className="text-sm text-destructive">{errors.email.message}</p>
                 )}
             </div>
-
-            {/* Submit */}
 
             <button
                 type="submit"

@@ -16,6 +16,13 @@ interface uploadFileProps {
     path: string;
 }
 
+interface renameFileProps {
+    name:string;
+    fileId:string;
+    extension:string;
+    path:string;
+}
+
 export const uploadFile = async ({ file, ownerId, accountId, path, ownerName }: uploadFileProps) => {
     const { storage, databases } = await createAdminClient()
     
@@ -75,9 +82,23 @@ export const getFiles = async (type: string) => {
             appwriteConfig.fileTableId,
             queries,
         )
-        console.log(files)
         return parseStringify(files)
     } catch (error) {
         console.log(error)
     }
 }
+
+export const renameFile = async ({name, fileId, extension, path}:renameFileProps) => {
+    const {databases} = await createAdminClient() 
+    const newName = `${name}.${extension}`
+    const updatedFile = await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.fileTableId,
+        fileId,
+        {
+            name:newName
+        }
+    )
+    revalidatePath(path)
+    return parseStringify(updatedFile)
+}   

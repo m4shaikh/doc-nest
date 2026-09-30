@@ -2,7 +2,7 @@ import React from 'react'
 import { SearchParamProps } from '@/app/types';
 import { getFiles } from '@/lib/actions/files.action';
 import FileCard from '@/app/components/FileCard';
-import { Models } from 'node-appwrite';
+
 const page = async ({ params }: SearchParamProps) => {
 
     const test = await params
