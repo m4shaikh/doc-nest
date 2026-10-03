@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from './Modal';
 import { getFileSize, parseDateTime } from '@/lib/utils';
-import { renameFile } from '@/lib/actions/files.action';
+import { deleteFile, renameFile, shareFile } from '@/lib/actions/files.action';
 import { File } from '../types';
 import path from 'path';
 import { usePathname } from 'next/navigation';
@@ -22,8 +22,14 @@ const DropDown = ({ file }: { file: File }) => {
     const [activeModal, setActiveModal] = useState<ModalType>(null);
 
     const [rename, setRename] = useState(`${file.name}`)
-
+    const [emails, setEmails] = useState<string[]>(file.users)
+    const [emailString, setEmailString] = useState('')
     const menuRef = useRef<HTMLDivElement>(null);
+
+    const removeUser = () => {
+
+    }
+
     const handleDownload = () => {
         setIsModalOpen(true)
         // handle Dwnload
@@ -64,7 +70,7 @@ const DropDown = ({ file }: { file: File }) => {
     }, [isOpen]);
 
     return (
-        <div className="absolute right-2 top-2 cursor-pointer" ref={menuRef}>
+        <div className="absolute right-2 top-2 " ref={menuRef}>
             {/* Menu Icon / Button */}
             <button
                 onClick={() => setIsOpen((prev) => !prev)}
@@ -77,24 +83,24 @@ const DropDown = ({ file }: { file: File }) => {
             {/* Dropdown Menu Content */}
             {isOpen && (
                 <div className="absolute left-0 top-6 w-32 bg-popover border border-border shadow-lg rounded-xl p-1 z-50 flex flex-col gap-1">
-                    <button onClick={handleDownload} className="text-left text-xs p-1.5 hover:bg-muted rounded">
+                    <button onClick={handleDownload} className="text-left text-xs p-1.5 hover:bg-muted rounded cursor-pointer">
                         Download
                     </button>
-                    <button onClick={handleRename} className="text-left text-xs p-1.5 hover:bg-muted rounded">
+                    <button onClick={handleRename} className="text-left text-xs p-1.5 hover:bg-muted rounded cursor-pointer">
                         Rename
                     </button>
-                    <button onClick={handleShare} className="text-left text-xs p-1.5 hover:bg-muted rounded">
+                    <button onClick={handleShare} className="text-left text-xs p-1.5 hover:bg-muted rounded cursor-pointer">
                         Share
                     </button>
-                    <button onClick={handleDelete} className="text-left text-xs text-red-500 p-1.5 hover:bg-muted rounded">
+                    <button onClick={handleDelete} className="text-left text-xs text-red-500 p-1.5 hover:bg-muted rounded cursor-pointer">
                         Delete
                     </button>
-                    <button onClick={handleDetails} className="text-left text-xs p-1.5 hover:bg-muted rounded">
+                    <button onClick={handleDetails} className="text-left text-xs p-1.5 hover:bg-muted rounded cursor-pointer">
                         Details
                     </button>
                 </div>
             )}
-
+            {/*Action Modals*/}
             {isModalOpen && activeModal == 'Rename' && (
                 <Modal setIsModalOpen={setIsModalOpen} activeModal={activeModal}>
                     <div className='flex flex-col gap-2 mt-4'>
@@ -129,12 +135,27 @@ const DropDown = ({ file }: { file: File }) => {
             )}
             {isModalOpen && activeModal == 'Share' && (
                 <Modal setIsModalOpen={setIsModalOpen} activeModal={activeModal}>
-
+                    <div>
+                        <input type="text" onChange={e => setEmailString(e.target.value)}/>
+                    </div>
+                    <button className='w-full bg-primary' onClick={() => {
+                        const newEmails = emailString.trim().split(',').filter(e => e !== '')
+                        console.log(newEmails)
+                        const finalEmailList = [...emails, ...newEmails]
+                        setEmails(finalEmailList)
+                    
+                        shareFile(finalEmailList, file.$id, path);
+                    }}>
+                        Share
+                    </button>
                 </Modal>
             )}
             {isModalOpen && activeModal == 'Delete' && (
                 <Modal setIsModalOpen={setIsModalOpen} activeModal={activeModal}>
-
+                    <div className='p-4 flex flex-col gap-4'>
+                        <p className='text-center text-lg'>Are you sure, <br />once deleted dacument can't be recovered </p>
+                        <button className='w-full p-2 bg-destructive text-secondary hover:scale-[1.05] transform transition-transform duration-200 active:bg-destructive/90' onClick={() => deleteFile(file.$id, file.bucketFileId, path)}>Delete</button>
+                    </div>
                 </Modal>
             )}
         </div>

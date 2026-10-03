@@ -9,7 +9,7 @@ const FileCard = ({ file }: {file:any}) => {
     const ownerName = file.ownerName
     return (
 
-        <div className='flex flex-col gap-1 bg-card relative shadow-xl h-auto w-35 rounded-xl p-3 cursor-pointer'>
+        <div className='flex flex-col gap-1 bg-card relative shadow-xl h-auto w-35 rounded-xl p-3'>
             <DropDown file={file}/>
             <div className='flex justify-between'>
                 <div className='flex bg-sidebar rounded-full p-2'>

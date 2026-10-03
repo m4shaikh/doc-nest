@@ -7,6 +7,7 @@ import { ID, Query } from "node-appwrite";
 import { constructFileUrl, getFileType, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "./user.actions";
+import { stringify } from "querystring";
 
 interface uploadFileProps {
     file: File;
@@ -17,15 +18,15 @@ interface uploadFileProps {
 }
 
 interface renameFileProps {
-    name:string;
-    fileId:string;
-    extension:string;
-    path:string;
+    name: string;
+    fileId: string;
+    extension: string;
+    path: string;
 }
 
 export const uploadFile = async ({ file, ownerId, accountId, path, ownerName }: uploadFileProps) => {
     const { storage, databases } = await createAdminClient()
-    
+
     try {
 
         const inputFile = InputFile.fromBuffer(file, file.name)
@@ -68,7 +69,7 @@ export const getFiles = async (type: string) => {
             Query.contains('users', [currentUser.email]),
         ])]
 
-        const isType = Query.equal('type',[type])
+        const isType = Query.equal('type', [type])
 
         return queries
     }
@@ -88,17 +89,53 @@ export const getFiles = async (type: string) => {
     }
 }
 
-export const renameFile = async ({name, fileId, extension, path}:renameFileProps) => {
-    const {databases} = await createAdminClient() 
+export const renameFile = async ({ name, fileId, extension, path }: renameFileProps) => {
+    const { databases } = await createAdminClient()
+    
     const newName = `${name}.${extension}`
     const updatedFile = await databases.updateDocument(
         appwriteConfig.databaseId,
         appwriteConfig.fileTableId,
         fileId,
         {
-            name:newName
+            name: newName
         }
     )
     revalidatePath(path)
     return parseStringify(updatedFile)
-}   
+}
+
+export const deleteFile = async (fileId: string, bucketFileId: string, path:string) => {
+    const { databases, storage } = await createAdminClient()
+
+    const deletedFile = await databases.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.fileTableId,
+        fileId
+    )
+    if (deletedFile) {
+
+        await storage.deleteFile(
+            appwriteConfig.bucketId,
+            bucketFileId
+        )
+
+    }
+    revalidatePath(path)
+    return parseStringify(deletedFile)
+}
+
+export const shareFile = async (emails:string[], fileId:string, path:string) => {
+    const {databases} = await createAdminClient()
+    
+    const sharedFile = await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.fileTableId,
+        fileId,
+        {
+            users : emails
+        }
+    )
+    revalidatePath(path)
+    return ''
+}
