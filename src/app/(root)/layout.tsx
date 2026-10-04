@@ -29,7 +29,7 @@ export default async function RootLayout({
             <div className="flex h-[calc(100vh-60px)] w-full">
                 
                 {/* Sidebar */}
-                <div className="h-full shrink-0 hidden md:block " >
+                <div className="h-full w-[72px] lg:w-[18%] hidden md:block " >
                     <Sidebar
                         userName={user.fullName}
                         email={user.email}

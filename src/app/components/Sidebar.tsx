@@ -9,11 +9,11 @@ export const Items = [
         name: 'Dashboard',
         icon: <LayoutDashboardIcon />
     }, {
-        url: '/documents',
+        url: '/document',
         name: 'Documents',
         icon: <File />
     }, {
-        url: '/images',
+        url: '/image',
         name: 'Images',
         icon: <ImageIcon />
     }, {
@@ -21,7 +21,7 @@ export const Items = [
         name: 'Media',
         icon: <VideoIcon />
     }, {
-        url: '/others',
+        url: '/other',
         name: 'Others',
         icon: <PieChartIcon />
     }
@@ -37,15 +37,15 @@ const Sidebar = ({userName,email}:{userName:string, email:string}) => {
                 {Items.map((item) => <SidebarItem key={item.name} url={item.url} name={item.name} icon={item.icon} />)}
 
             </div>
-            <div className='flex items-center gap-2 py-8 text-sm' >
-                <div className='h-[44px] w-[44px] rounded-full overflow-hidden'>
+            <div className='flex items-center gap-2 py-8 px-2 text-sm' >
+                <div className='h-[40px] w-[40px] rounded-full overflow-hidden'>
                     <Image src='/placeHolder.jpg' width={44} height={44} alt="avatar" className='object-contain' />
 
                 </div>
-                <div className='hidden lg:block'>
+                <div className=' w-[calc(100%-48px)] hidden lg:block'>
 
-                    <p>{userName}</p>
-                    <p className=''>{email}</p>
+                    <p className='truncate'>{userName}</p>
+                    <p className='truncate'>{email}</p>
                 </div>
             </div>
 

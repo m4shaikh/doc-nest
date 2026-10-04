@@ -70,6 +70,8 @@ export const getFiles = async (type: string) => {
         ])]
 
         const isType = Query.equal('type', [type])
+        
+        queries.push(isType)
 
         return queries
     }

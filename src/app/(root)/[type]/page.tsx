@@ -16,7 +16,7 @@ const page = async ({ params }: SearchParamProps) => {
             <h3 className='text-xl py-2 px-4 capitalize shrink-0'>
                 {type}
             </h3>
-            <div className='flex-1 min-h-0 grid grid-auto-fit gap-4 px-4 py-2 overflow-y-auto '>
+            <div className='flex-1 min-h-0 grid grid-auto-fit content-start  gap-4 px-4 py-2 overflow-y-auto '>
                 {files.documents.map((file: any) => <FileCard file={file} key={file.$id} />)}
             </div>
         </div>
