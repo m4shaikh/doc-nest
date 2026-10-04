@@ -10,7 +10,7 @@ const Modal = ({ activeModal, setIsModalOpen, children }: any) => {
           <div className='text-center text-xl pb-2 font-bold w-full'>
             {activeModal}
           </div>
-           <button className='absolute right-0 bg-secondary/50 rounded-xl p-1 cursor-pointer hover:bg-secondary '  onClick={()=>setIsModalOpen(false)}><XIcon/></button>
+           <button className='absolute text-primary right-0 bg-secondary/50 rounded-xl p-1 cursor-pointer hover:bg-secondary '  onClick={()=>setIsModalOpen(false)}><XIcon/></button>
         </div>
         <div>
           {children}

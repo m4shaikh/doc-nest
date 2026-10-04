@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from './Modal';
+import { XIcon } from 'lucide-react';
 import { getFileSize, parseDateTime } from '@/lib/utils';
 import { deleteFile, renameFile, shareFile } from '@/lib/actions/files.action';
 import { File } from '../types';
@@ -12,7 +13,7 @@ const DropDown = ({ file }: { file: File }) => {
     console.log(file)
 
     const path = usePathname()
-    
+
     const createdAt = parseDateTime(file.$createdAt)
     const editedAt = parseDateTime(file.$updatedAt)
 
@@ -129,25 +130,40 @@ const DropDown = ({ file }: { file: File }) => {
                         <div>date modified</div>
                         <div>{editedAt?.day}/{editedAt?.month}/{editedAt?.year}, {editedAt?.hour12}:{editedAt?.minute}</div>
                         <div>shared with</div>
-                        <div>[{file.users.map((user)=>user)}]</div>
+                        <div>[{file.users.map((user) => user)}]</div>
                     </div>
                 </Modal>
             )}
             {isModalOpen && activeModal == 'Share' && (
                 <Modal setIsModalOpen={setIsModalOpen} activeModal={activeModal}>
-                    <div>
-                        <input type="text" onChange={e => setEmailString(e.target.value)}/>
+                    <div className='flex flex-col gap-4 p-4'>
+                        <div className=''>
+                            <p className='text-center'>Share With </p>
+                            <input className='w-full p-1 border rounded-xl' type="text" placeholder='Enter email' onChange={e => setEmailString(e.target.value)} />
+                        </div>
+                        <div className='flex flex-col bg-secondary p-2 rounded-xl gap-2'>
+                            <p className='text-center'>You have shared this document with</p>
+                            {file.users.map((user) => (
+                                <div key={user} className='bg-popover p-1 rounded-xl flex justify-between'>
+
+                                    <div className='text-primary '>{user}</div>
+                                    <button className='bg-secondary/50 rounded-xl cursor-pointer hover:bg-secondary text-primary' onClick={removeUser}><XIcon /></button>
+
+                                </div>
+                            ))}
+
+                        </div>
+                        <button className='w-full bg-primary rounded-xl p-2 text-primary-foreground' onClick={() => {
+                            const newEmails = emailString.trim().split(',').filter(e => e !== '')
+                            console.log(newEmails)
+                            const finalEmailList = [...emails, ...newEmails]
+                            setEmails(finalEmailList)
+
+                            shareFile(finalEmailList, file.$id, path);
+                        }}>
+                            Share
+                        </button>
                     </div>
-                    <button className='w-full bg-primary' onClick={() => {
-                        const newEmails = emailString.trim().split(',').filter(e => e !== '')
-                        console.log(newEmails)
-                        const finalEmailList = [...emails, ...newEmails]
-                        setEmails(finalEmailList)
-                    
-                        shareFile(finalEmailList, file.$id, path);
-                    }}>
-                        Share
-                    </button>
                 </Modal>
             )}
             {isModalOpen && activeModal == 'Delete' && (
