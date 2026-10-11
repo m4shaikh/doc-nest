@@ -14,7 +14,7 @@ const Navbar = () => {
         </span>
 
       </div>
-      <div className='flex w-full items-center justify-between'>
+      <div className='flex w-full items-center justify-between relative'>
         <Searchbar />
         <div className='flex items-center gap-4'>
           <div onClick={async() => await logoutUser()}>

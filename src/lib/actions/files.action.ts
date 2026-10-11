@@ -3,7 +3,7 @@
 import { InputFile } from "node-appwrite/file";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
-import { ID, Query } from "node-appwrite";
+import { ID, OrderBy, Query } from "node-appwrite";
 import { constructFileUrl, getFileType, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "./user.actions";
@@ -59,33 +59,47 @@ export const uploadFile = async ({ file, ownerId, accountId, path, ownerName }: 
     }
 }
 
-export const getFiles = async (type: string) => {
-    const { databases } = await createAdminClient()
-
-    const createQueries = (currentUser: any) => {
-
-        const queries = [Query.or([
+const createQueries = (currentUser: any, type: string, searchText: string, sort: string) => {
+    const queries = [
+        Query.or([
             Query.equal('owner', [currentUser.$id]),
             Query.contains('users', [currentUser.email]),
-        ])]
-
-        const isType = Query.equal('type', [type])
-        
-        queries.push(isType)
-
-        return queries
+        ])
+    ]
+    
+    if (type) {
+        queries.push(Query.equal('type', [type]))
+    }
+    
+    if (searchText) {
+        queries.push(Query.contains('name', searchText))
     }
 
+    const sortString = sort || '$createdAt-desc'
+    const [sortBy, orderBy] = sortString.split('-')
+    
+    queries.push(orderBy === 'asc' ? Query.orderAsc(sortBy) : Query.orderDesc(sortBy))
+
+    return queries
+}
+
+export const getFiles = async (type: string='', searchText:string, sort:string = '$createdAt-desc') => {
+
+    const { databases } = await createAdminClient()
+
+
     try {
+
         const currentUser = await getCurrentUser()
         if (!currentUser) throw new Error('No user')
-        const queries = createQueries(currentUser)
+        const queries = createQueries(currentUser, type, searchText, sort)
         const files = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.fileTableId,
             queries,
         )
         return parseStringify(files)
+        
     } catch (error) {
         console.log(error)
     }

@@ -3,13 +3,15 @@ import { SearchParamProps } from '@/app/types';
 import { getFiles } from '@/lib/actions/files.action';
 import FileCard from '@/app/components/FileCard';
 
-const page = async ({ params }: SearchParamProps) => {
+const page = async ({ searchParams, params }: SearchParamProps) => {
 
-    const test = await params
     const type = ((await params)?.type as string) || '';
-    console.log(test)
+    const searchText = ((await searchParams)?.query as string || '')
+    const sort = (await searchParams)?.sort as string || '';
 
-    const files = await getFiles(type)
+    console.log('here'+searchText)
+    
+    const files = await getFiles(type, searchText, sort)
 
     return (
         <div className='rounded-2xl border border-1 h-full bg-card flex flex-col overflow-hidden'>

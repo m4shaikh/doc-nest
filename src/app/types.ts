@@ -1,9 +1,7 @@
 export type FormType = 'Login' | 'Signup'
 
-type SegmentParams = Record<string, string>;
-
 export interface SearchParamProps {
-  params?: Promise<SegmentParams>;
+  params?: Promise<Record<string, string>>;
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
