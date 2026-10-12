@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Search } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { getFiles } from '@/lib/actions/files.action'
@@ -12,41 +12,57 @@ const Searchbar = () => {
   const [results, setResults] = useState<File[]>([])
   const [open, setOpen] = useState(false)
 
-useEffect(() => {
-  const fetchFiles = async () => {
-    try {
+  const modalRef = useRef<HTMLDivElement>(null)
 
-      const files = await getFiles('',query)
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (modalRef.current && !modalRef.current.contains(event?.target as Node)) {
+        setOpen(false)
+      }
 
-      console.log('Full response:', files)
-      console.log('Documents:', files?.documents)
-
-      setResults(files?.documents ?? [])
-      setOpen(true)
-    } catch (error) {
-      console.error('Error fetching files:', error)
     }
-  } 
+    if (!open) return;
+    document.addEventListener('mousedown', handleClickOutside)
 
-  fetchFiles()
-}, [query])
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+
+  }, [open])
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+
+        const files = await getFiles('', query)
+
+        console.log('Full response:', files)
+        console.log('Documents:', files?.documents)
+
+        setResults(files?.documents ?? [])
+      } catch (error) {
+        console.error('Error fetching files:', error)
+      }
+    }
+
+    fetchFiles()
+  }, [query])
   useEffect(() => {
     if (!searchQuery) {
       setQuery('')
     }
   }, [searchQuery])
-  
+
   return (
-    <div className='flex border rounded-2xl items-center shadow bg-popover relative'>
+    <div onClick={() => setOpen(true)} ref={modalRef} className='flex border rounded-2xl items-center shadow bg-popover relative'>
       <div className='p-2'>
         <Search />
       </div>
       <div>
         <input value={query} onChange={(e) => setQuery(e.target.value)} type="text" placeholder='Search Your Files' className='text focus:outline-none ' />
-        {results.length && (<div className='absolute bg-input/90 rounded-xl p-4  z-20 top-12 left-2'>
-          <ul className='flex flex-col gap-2'>
-            {results.map((file) =>(<li className='bg-card line-clamp-1 p-1 rounded-xl text-md text-chart-4 cursor-pointer' key={file.$id}>{file.name}</li>))}
-          
+        {open && (<div className='absolute w-[250px] rounded-xl overflow-hidden  z-20 top-12 left-2'>
+          <ul className=''>
+            {results.map((file) => (<li className='bg-chart-2/90 line-clamp-1 p-1 text-md text-secondary cursor-pointer hover:bg-chart-2' key={file.$id}>{file.name}</li>))}
           </ul>
         </div>)}
       </div>

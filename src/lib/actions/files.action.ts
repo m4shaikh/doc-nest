@@ -99,7 +99,6 @@ export const getFiles = async (type: string='', searchText:string, sort:string =
             queries,
         )
         return parseStringify(files)
-        
     } catch (error) {
         console.log(error)
     }
