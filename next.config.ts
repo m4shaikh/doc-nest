@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   allowedDevOrigins: [
     'localhost:3000',
     'td7j8s89-3000.inc1.devtunnels.ms'

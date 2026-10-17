@@ -330,7 +330,7 @@ const DropDown = ({ file }: DropDownProps) => {
                                     >
                                         <span className="break-all text-sm text-primary">
                                             {email}
-                                        </span>
+                                        </span>x
 
                                         <button
                                             type="button"

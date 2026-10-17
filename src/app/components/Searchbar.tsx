@@ -60,7 +60,7 @@ const Searchbar = () => {
       </div>
       <div>
         <input value={query} onChange={(e) => setQuery(e.target.value)} type="text" placeholder='Search Your Files' className='text focus:outline-none ' />
-        {open && (<div className='absolute w-[250px] rounded-xl overflow-hidden  z-20 top-12 left-2'>
+        {open && (<div className='absolute w-[250px] rounded-xl overflow-hidden z-20 top-12 left-2'>
           <ul className=''>
             {results.map((file) => (<li className='bg-chart-2/90 line-clamp-1 p-1 text-md text-secondary cursor-pointer hover:bg-chart-2' key={file.$id}>{file.name}</li>))}
           </ul>

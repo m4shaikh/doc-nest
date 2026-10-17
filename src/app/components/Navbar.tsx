@@ -7,16 +7,11 @@ import { logoutUser } from '@/lib/actions/user.actions'
 import FileUploader from './FileUploader'
 const Navbar = () => {
   return (
-    <div className='w-full h-full hidden lg:flex flex items-center gap-20 px-6 '>
-      <div className=' text-2xl font-bold px-4 py-4'>
-        <span className='cursor-pointer '>
-          DocNest
-        </span>
-
-      </div>
+    <div className='w-full h-full hidden lg:flex flex items-center  '>
+      
       <div className='flex w-full items-center justify-between relative'>
         <Searchbar />
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-4 pr-4'>
           <div onClick={async() => await logoutUser()}>
 
            <LogOut className='cursor-pointer' />

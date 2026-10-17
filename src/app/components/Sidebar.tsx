@@ -1,5 +1,6 @@
+'use client'
 import { File, LayoutDashboardIcon, ImageIcon, VideoIcon, PieChart, PieChartIcon } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import SidebarItem from './SidebarItem'
 import Image from 'next/image'
 
@@ -28,24 +29,38 @@ export const Items = [
 
 ]
 
-const Sidebar = ({userName,email}:{userName:string, email:string}) => {
+const Sidebar = ({ userName, email }: { userName: string, email: string }) => {
+
+    const [isSelected, setIsSelected] = useState<string>('')
+
     return (
-        <aside className='sidebar h-full px-2 flex flex-col justify-between mt-4 '>
-
-            <div className='flex flex-col gap-4 '>
-
-                {Items.map((item) => <SidebarItem key={item.name} url={item.url} name={item.name} icon={item.icon} />)}
+        <aside className='sidebar h-full px-2 flex flex-col mt-4 '>
+            <div className='text-2xl font-bold mb-4 ml-2'>
+                <span className='cursor-pointer hidden lg:block '>
+                    DocNest
+                </span>
+                <span className='cursor-pointer lg:hidden '>
+                    DN
+                </span>
 
             </div>
-            <div className='flex items-center gap-2 py-8 px-2 text-sm' >
-                <div className='h-[40px] w-[40px] rounded-full overflow-hidden'>
-                    <Image src='/placeHolder.jpg' width={44} height={44} alt="avatar" className='object-contain' />
+            <div className='flex h-full flex-col justify-between'>
+
+                <div className='flex flex-col gap-4 '>
+
+                    {Items.map((item) => <SidebarItem key={item.name} url={item.url} name={item.name} icon={item.icon} isSelected={isSelected} setIsSelected={setIsSelected} />)}
 
                 </div>
-                <div className=' w-[calc(100%-48px)] hidden lg:block'>
+                <div className='flex items-center gap-2 py-8 px-2 text-sm' >
+                    <div className='h-[40px] w-[40px] rounded-full overflow-hidden'>
+                        <Image src='/placeHolder.jpg' width={44} height={44} alt="avatar" className='object-contain' />
 
-                    <p className='truncate'>{userName}</p>
-                    <p className='truncate'>{email}</p>
+                    </div>
+                    <div className=' w-[calc(100%-48px)] hidden lg:block'>
+
+                        <p className='truncate'>{userName}</p>
+                        <p className='truncate'>{email}</p>
+                    </div>
                 </div>
             </div>
 

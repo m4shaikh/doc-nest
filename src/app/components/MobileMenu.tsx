@@ -3,20 +3,42 @@ import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
 import {
     Sheet,
-    SheetClose,
     SheetContent,
-    SheetDescription,
     SheetFooter,
-    SheetHeader,
-    SheetTitle,
     SheetTrigger,
 } from "@/app/components/ui/sheet"
-import SidebarItem from './SidebarItem'
-import Link from 'next/link'
+import { File, LayoutDashboardIcon, ImageIcon, VideoIcon, PieChart, PieChartIcon } from 'lucide-react'
+
 import Image from 'next/image'
-import { Items } from './Sidebar'
 import { MenuIcon } from 'lucide-react'
 import MobileMenuItems from './MobileMenuItems'
+
+
+export const Items = [
+    {
+        url: '/',
+        name: 'Dashboard',
+        icon: <LayoutDashboardIcon />
+    }, {
+        url: '/document',
+        name: 'Documents',
+        icon: <File />
+    }, {
+        url: '/image',
+        name: 'Images',
+        icon: <ImageIcon />
+    }, {
+        url: '/media',
+        name: 'Media',
+        icon: <VideoIcon />
+    }, {
+        url: '/other',
+        name: 'Others',
+        icon: <PieChartIcon />
+    }
+
+]
+
 
 const MobileMenu = ({userName,email}:{userName:string,email:string}) => {
     return (
