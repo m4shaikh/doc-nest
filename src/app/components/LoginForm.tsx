@@ -52,8 +52,14 @@ const LoginForm = () => {
             </button>
 
             {
-                accountId && <OTPModal accountId={accountId}/>
+                accountId && <OTPModal accountId={accountId} />
             }
+            <div>
+                <p className="text-center"> 
+                    Don't have account <a className="text-primary" href="signup">SignUp</a>
+                </p>
+            </div>
+
 
         </form>
     );

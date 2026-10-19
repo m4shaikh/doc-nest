@@ -60,6 +60,12 @@ const SignupForm = () => {
       {
         accountId && <OTPModal accountId={accountId} />
       }
+      <div>
+        <p className="text-center ">
+          Already have an account <a className="text-primary" href="/login">LogIn</a>
+        </p>
+      </div>
+
     </form>
   );
 };

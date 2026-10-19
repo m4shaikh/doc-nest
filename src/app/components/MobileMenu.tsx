@@ -36,9 +36,8 @@ export const Items = [
         name: 'Others',
         icon: <PieChartIcon />
     }
-
+                                                                            
 ]
-
 
 const MobileMenu = ({userName,email}:{userName:string,email:string}) => {
     return (
