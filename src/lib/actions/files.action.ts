@@ -1,5 +1,6 @@
 'use server'
 
+
 import { InputFile } from "node-appwrite/file";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
@@ -153,4 +154,83 @@ export const shareFile = async (emails:string[], fileId:string, path:string) => 
     )
     revalidatePath(path)
     return ''
+}
+export async function getTotalSpaceUsed() {
+  try {
+    const { databases } = await createAdminClient();
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) throw new Error("User is not authenticated.");
+
+    const files = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.fileTableId,
+      [
+        Query.equal("owner", [currentUser.$id]),
+        Query.select(["size", "type", "$updatedAt"]),
+        Query.limit(5000),
+      ]
+    );
+
+    const totalSpace = {
+      image: { size: 0, latestDate: "" },
+      document: { size: 0, latestDate: "" },
+      video: { size: 0, latestDate: "" },
+      audio: { size: 0, latestDate: "" },
+      other: { size: 0, latestDate: "" },
+      used: 0,
+      all: 2 * 1024 * 1024 * 1024, // 2GB quota in bytes
+    };
+
+    files.documents.forEach((file) => {
+      const fileType = file.type as "image" | "document" | "video" | "audio" | "other";
+      const fileSize = Number(file.size) || 0;
+
+      if (totalSpace[fileType]) {
+        totalSpace[fileType].size += fileSize;
+
+        if (
+          !totalSpace[fileType].latestDate ||
+          new Date(file.$updatedAt) > new Date(totalSpace[fileType].latestDate)
+        ) {
+          totalSpace[fileType].latestDate = file.$updatedAt;
+        }
+      }
+
+      totalSpace.used += fileSize;
+    });
+
+    return parseStringify(totalSpace);
+  } catch (error) {
+    console.error("Error calculating total space:", error);
+    return null;
+  }
+}
+
+// Inside lib/actions/file.actions.ts
+export async function getRecentFiles(limit = 10) {
+  try {
+    const { databases } = await createAdminClient();
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) throw new Error("User is not authenticated.");
+
+    const files = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.fileTableId,
+      [
+        Query.or([
+          Query.equal("owner", [currentUser.$id]),
+          Query.contains("users", [currentUser.email]),
+        ]),
+        Query.orderDesc("$createdAt"),
+        Query.limit(limit),
+      ]
+    );
+
+    return parseStringify(files);
+  } catch (error) {
+    console.error("Error fetching recent files:", error);
+    return { documents: [], total: 0 };
+  }
 }

@@ -123,18 +123,57 @@ export const getFileIcon = (
   }
 };
 
-export const getFileSize = (size:number) =>{
-  if(size>1024 && size< 1048576){
-    size = size/1024
-    return `${size.toFixed(1)}KB`
+// Replace getFileSize in lib/utils.ts with this updated version:
+export const getFileSize = (size: number) => {
+  if (!size || size <= 0) return '0B';
+  if (size >= 1073741824) {
+    return `${(size / 1073741824).toFixed(1)}GB`;
   }
-  if(size>1048576){
-    size = (size/1048576)
-    return `${size.toFixed(1)}MB`
-  }else{
-    return `${size}B`
+  if (size >= 1048576) {
+    return `${(size / 1048576).toFixed(1)}MB`;
   }
-} 
+  if (size >= 1024) {
+    return `${(size / 1024).toFixed(1)}KB`;
+  }
+  return `${size}B`;
+};
+
+// Add this at the bottom of lib/utils.ts:
+export const getUsageSummary = (totalSpace: any) => {
+  return [
+    {
+      title: 'Documents',
+      size: totalSpace.document.size,
+      latestDate: totalSpace.document.latestDate,
+      icon: '/assets/icons/file-document.svg',
+      url: '/documents',
+    },
+    {
+      title: 'Images',
+      size: totalSpace.image.size,
+      latestDate: totalSpace.image.latestDate,
+      icon: '/assets/icons/file-image.svg',
+      url: '/images',
+    },
+    {
+      title: 'Media',
+      size: totalSpace.video.size + totalSpace.audio.size,
+      latestDate:
+        totalSpace.video.latestDate > totalSpace.audio.latestDate
+          ? totalSpace.video.latestDate
+          : totalSpace.audio.latestDate,
+      icon: '/assets/icons/file-video.svg',
+      url: '/media',
+    },
+    {
+      title: 'Others',
+      size: totalSpace.other.size,
+      latestDate: totalSpace.other.latestDate,
+      icon: '/assets/icons/file-other.svg',
+      url: '/others',
+    },
+  ];
+};
 export const parseDateTime = (dateString: string) => {
   const date = new Date(dateString);
   

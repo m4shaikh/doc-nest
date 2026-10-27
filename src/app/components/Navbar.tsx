@@ -1,20 +1,19 @@
 'use client'
-import React from 'react'
+
 import Searchbar from './Searchbar'
-import UploadButton from './UploadButton'
 import { LogOut } from 'lucide-react'
 import { logoutUser } from '@/lib/actions/user.actions'
-import FileUploader from './FileUploader'
+
 const Navbar = () => {
   return (
     <div className='w-full h-full hidden lg:flex flex items-center  '>
-      
+
       <div className='flex w-full items-center justify-between relative'>
         <Searchbar />
         <div className='flex items-center gap-4 pr-4'>
-          <div onClick={async() => await logoutUser()}>
+          <div onClick={async () => await logoutUser()}>
 
-           <LogOut className='cursor-pointer' />
+            <LogOut className='cursor-pointer' />
           </div>
         </div>
       </div>

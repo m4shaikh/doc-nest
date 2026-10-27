@@ -1,16 +1,24 @@
-import { LayoutDashboardIcon } from 'lucide-react'
 import Link from 'next/link'
+import React from 'react'
+import { SheetClose } from "@/app/components/ui/sheet"
 
-const MobileMenuItems = ({ url, name, icon }: { url: string, name: string, icon: React.JSX.Element }) => {
+const MobileMenuItems = ({
+  url,
+  name,
+  icon,
+}: {
+  url: string
+  name: string
+  icon: React.JSX.Element
+}) => {
   return (
-    <Link href={url}>
-      <div className={`px-4 py-2 hover:bg-popover rounded-2xl flex gap-2 cursor-pointer`}>
+    <SheetClose render={<Link href={url} />} nativeButton={false}>
+      <div className="px-4 py-2 hover:bg-popover rounded-2xl flex gap-2 cursor-pointer">
         {icon}
-        <span className=''>
-          {name}
-        </span>
+        <span>{name}</span>
       </div>
-    </Link>)
+    </SheetClose>
+  )
 }
 
 export default MobileMenuItems

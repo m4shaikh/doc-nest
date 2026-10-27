@@ -64,7 +64,8 @@ const MobileMenu = ({userName,email}:{userName:string,email:string}) => {
 
                     </div>
                 </div>
-                <SheetFooter>
+                <SheetFooter className='relative'>
+                    <button className='absolute left-6 bottom-6 py-2 px-6 bg-primary text-secondary rounded-xl text-lg'>LogOut</button>
                 </SheetFooter>
             </SheetContent>
         </Sheet></div>

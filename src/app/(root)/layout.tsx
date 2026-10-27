@@ -25,7 +25,7 @@ export default async function RootLayout({
                     />
                 </div>
                 <div className="flex-1 h-full">
-                    <div className="h-[60px] shrink-0">
+                    <div className="h-[60px] shrink-0 pl-4">
 
                         <Navbar />
                         <MobileNav
